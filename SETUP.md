@@ -13,15 +13,15 @@ itself (bot token, chat, key and the unattended-operation checklist) is in
 `Specification.md` §1 is the source of truth for these versions. Confirm
 with the project owner before changing any of them.
 
-| Component               | Version | Installed how                                   |
-| ----------------------- | ------- | ----------------------------------------------- |
-| JDK                     | 17      | apt (below)                                     |
-| Gradle                  | 8.9     | Gradle wrapper, bootstrapped once (below)       |
-| Android Gradle Plugin   | 8.5.2   | Downloaded by Gradle                            |
-| Kotlin                  | 2.0.20  | Downloaded by Gradle (no separate install)      |
-| Android SDK platform    | 34      | `sdkmanager` or Android Studio (below)          |
-| Android build-tools     | 34.0.0  | `sdkmanager` or Android Studio (below)          |
-| minSdk                  | 31      | Android 12+ on the Pixel 8a                     |
+| Component             | Version | Installed how                              |
+| --------------------- | ------- | ------------------------------------------ |
+| JDK                   | 17      | apt (below)                                |
+| Gradle                | 8.9     | Gradle wrapper, bootstrapped once (below)  |
+| Android Gradle Plugin | 8.5.2   | Downloaded by Gradle                       |
+| Kotlin                | 2.0.20  | Downloaded by Gradle (no separate install) |
+| Android SDK platform  | 34      | `sdkmanager` or Android Studio (below)     |
+| Android build-tools   | 34.0.0  | `sdkmanager` or Android Studio (below)     |
+| minSdk                | 31      | Android 12+ on the Pixel 8a                |
 
 You don't install Kotlin yourself. The Kotlin Gradle plugin brings the
 compiler, and Gradle downloads every library dependency on the first build.
@@ -137,10 +137,12 @@ The first build downloads AGP, Kotlin and every dependency, so it takes a
 while.
 
 - The APK is written to `app/build/outputs/apk/debug/app-debug.apk`.
+
 - Unit tests run on the host JVM. There is no `androidTest` (on-device)
   suite.
-- To run one class or one test:
 
+- To run one class or one test:
+  
   ```sh
   ./gradlew :app:testDebugUnitTest --tests 'dev.smsforwarder.telegram.TelegramSenderTest'
   ./gradlew :app:testDebugUnitTest --tests 'dev.smsforwarder.telegram.TelegramClientTest.errors_areClassified'
@@ -154,17 +156,20 @@ The app isn't distributed through a store, so you sideload it over USB.
 
 1. On the Pixel 8a, open **Settings → About phone** and tap **Build number**
    seven times to enable Developer options.
+
 2. Open **Settings → System → Developer options** and turn on **USB
    debugging**.
-3. Connect the phone by USB and check that it's visible:
 
+3. Connect the phone by USB and check that it's visible:
+   
    ```sh
    adb devices    # should list the phone as "device"
    ```
-
+   
    Accept the "Allow USB debugging?" prompt on the phone the first time.
-4. Install:
 
+4. Install:
+   
    ```sh
    ./gradlew :app:installDebug
    ```
@@ -187,11 +192,11 @@ There's nothing to install for it today.
 
 ## Troubleshooting
 
-| Symptom                                                                           | Fix                                                                                       |
-| --------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
-| `Unsupported class file major version 69` or other Java-version errors from Gradle | Gradle is running on a JDK newer than 22. Set `JAVA_HOME` to JDK 17 (step 1).            |
-| `./gradlew: Permission denied`, `./gradlew` does nothing, or `Could not find or load main class ...GradleWrapperMain` | The wrapper hasn't been bootstrapped. Do step 4.                 |
-| `SDK location not found`                                                          | Set `sdk.dir` in `local.properties` or `ANDROID_HOME` (step 3).                          |
-| `Failed to install the following Android SDK packages as some licences have not been accepted` | Run `sdkmanager --licenses`.                                                |
-| `adb devices` shows `unauthorized`                                                | Unlock the phone and accept the USB debugging prompt. Re-plug if the prompt doesn't show. |
-| `adb devices` shows nothing                                                       | Check the USB cable (it must carry data) and that USB debugging is on.                     |
+| Symptom                                                                                                               | Fix                                                                                       |
+| --------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| `Unsupported class file major version 69` or other Java-version errors from Gradle                                    | Gradle is running on a JDK newer than 22. Set `JAVA_HOME` to JDK 17 (step 1).             |
+| `./gradlew: Permission denied`, `./gradlew` does nothing, or `Could not find or load main class ...GradleWrapperMain` | The wrapper hasn't been bootstrapped. Do step 4.                                          |
+| `SDK location not found`                                                                                              | Set `sdk.dir` in `local.properties` or `ANDROID_HOME` (step 3).                           |
+| `Failed to install the following Android SDK packages as some licences have not been accepted`                        | Run `sdkmanager --licenses`.                                                              |
+| `adb devices` shows `unauthorized`                                                                                    | Unlock the phone and accept the USB debugging prompt. Re-plug if the prompt doesn't show. |
+| `adb devices` shows nothing                                                                                           | Check the USB cable (it must carry data) and that USB debugging is on.                    |
