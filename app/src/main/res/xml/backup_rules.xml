@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<full-backup-content>
+    <!-- Rules/config (incl. the Telegram bot token) excluded from cloud backup (Specification §8). -->
+    <exclude domain="root" path="noBackup/" />
+    <exclude domain="root" path="files/" />
+</full-backup-content>
